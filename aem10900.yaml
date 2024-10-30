@@ -1,0 +1,526 @@
+---
+name: AEM10900
+author: "Silvano Cortesi"
+notice: |
+  Licensed under GPL
+defaults:
+  layout_bitwidth: 8
+
+registers:
+  VERSION: !Register
+    adr: 0x00
+    reset_val: 0x00
+    doc: Version Register.
+    layout: !Layout
+      MINOR:
+        bits: [0-3]
+        access: [R]
+        doc: Minor revision number.
+        accepts: !Fixed 0x00
+      MAJOR:
+        bits: [4-7]
+        access: [R]
+        doc: Major revision number.
+        accepts: !Fixed 0x00
+
+  MPPTCFG: !Register
+    adr: 0x01
+    reset_val: 0x77
+    doc: MPPT timing and ratio configuration.
+    layout: !Layout
+      RATIO:
+        bits: [0-3]
+        access: [R, W]
+        doc: MPP ratio
+        accepts: !Enum
+          R_ZMPP:
+            val: 0x00
+          R_90:
+            val: 0x01
+          R_65:
+            val: 0x02
+          R_60:
+            val: 0x03
+          R_85:
+            val: 0x04
+          R_75:
+            val: 0x05
+          R_70:
+            val: 0x06
+          R_80:
+            val: 0x07
+          R_35:
+            val: 0x08
+          R_50:
+            val: 0x09
+      TIMING:
+        bits: [4-6]
+        access: [R, W]
+        doc: MPP Timing (T_xx_yy) with xx being T_VOC and yy being T_MPPT.
+        accepts: !Enum
+          T_2_64:
+            val: 0x00
+          T_256_16384:
+            val: 0x01
+          T_64_4096:
+            val: 0x02
+          T_8_1024:
+            val: 0x03
+          T_4_256:
+            val: 0x04
+          T_2_128:
+            val: 0x05
+          T_4_512:
+            val: 0x06
+          T_2_256:
+            val: 0x07
+
+  VOVDIS: !Register
+    adr: 0x02
+    reset_val: 0x2D
+    doc: Overdischarge level of the storage element.
+    layout: !Layout
+      THRESH:
+        bits: [0-5]
+        access: [R,W]
+        doc: Discharge level of the battery, set as THRESH = (V_ovdis - 0.50625) / 0.05625.
+        accepts: !UInt
+
+  VOVCH: !Register
+    adr: 0x03
+    reset_val: 0x33
+    doc: Overcharge level of the storage element.
+    layout: !Layout
+      THRESH:
+        bits: [0-5]
+        access: [R,W]
+        doc: Overcharge level of the battery, set as THRESH = (V_ovch - 1.2375) / 0.05625.
+        accepts: !UInt
+
+  TEMPCOLD: !Register
+    adr: 0x04
+    reset_val: 0x8F
+    doc: Low temperature threshold for charging. Defaults to 0 degC.
+    layout: !Layout
+      THRESH:
+        bits: [0-7]
+        access: [R,W]
+        doc: Cold temperature level, set as THRESH = 256*R_TH(T) / (R_TH(T) + R_DIV).
+        accepts: !UInt
+
+  TEMPHOT: !Register
+    adr: 0x05
+    reset_val: 0x2F
+    doc: High temperature threshold for charging. Defaults to 45 degC.
+    layout: !Layout
+      THRESH:
+        bits: [0-7]
+        access: [R,W]
+        doc: Hot temperature level, set as THRESH = 256*R_TH(T) / (R_TH(T) + R_DIV).
+        accepts: !UInt
+
+  PWR: !Register
+    adr: 0x06
+    reset_val: 0x07
+    doc: Register dedicated to the power settings of the AEM10900.
+    layout: !Layout
+      KEEPALEN:
+        bits: [0]
+        access: [R, W]
+        doc: Keep alive enable. True means VINT supplied by STO, False means VINT supplied by SRC.
+        accepts: !Bool
+      HPEN:
+        bits: [1]
+        access: [R, W]
+        doc: High-power mode enable. True means automatic change between modes, False means disabled.
+        accepts: !Bool
+      TMONEN:
+        bits: [2]
+        access: [R, W]
+        doc: Temperature monitoring enable. True enables monitoring of ambient temperature.
+        accepts: !Bool
+      STOCHDIS:
+        bits: [3]
+        access: [R, W]
+        doc: Battery charging disable. True means battery charging is disabled.
+        accepts: !Bool
+      RESERVED:
+        bits: [4-7]
+        access: [R]
+        doc: Write to 0x00.
+        accepts: !Fixed 0x00
+
+  SLEEP: !Register
+    adr: 0x07
+    reset_val: 0x01
+    doc: The Sleep register enables the sleep mode and sets the conditions for entering the sleep state.
+    layout: !Layout
+      EN:
+        bits: [0]
+        access: [R, W]
+        doc: The field enables sleep state when set to True (depending then on source voltage).
+        accepts: !Bool
+      SRCTHRESH:
+        bits: [1-3]
+        access: [R, W]
+        doc: This field sets the source voltage threshold below which the AEM10900 enters sleep state.
+        accepts: !Enum
+          SRCTH_mV:
+            doc: Unknown what this option means.
+            val: 0x0
+          SRCTH_202mV:
+            doc: Sleep threshold at 0.202V.
+            val: 0x1
+          SRCTH_255mV:
+            doc: Sleep threshold at 0.255V.
+            val: 0x2
+          SRCTH_300mV:
+            doc: Sleep threshold at 0.300V.
+            val: 0x3
+          SRCTH_360mV:
+            doc: Sleep threshold at 0.360V.
+            val: 0x4
+          SRCTH_405mV:
+            doc: Sleep threshold at 0.405V.
+            val: 0x5
+          SRCTH_510mV:
+            doc: Sleep threshold at 0.510V.
+            val: 0x6
+          SRCTH_600mV:
+            doc: Sleep threshold at 0.600V.
+            val: 0x7
+
+  STOMON: !Register
+    adr: 0x08
+    reset_val: 0x00
+    doc: Configures the acquisition rate of the ADC that measures STO voltage.
+    layout: !Layout
+      RATE:
+        bits: [0-2]
+        access: [R, W]
+        doc: Acquisition Rate.
+        accepts: !Enum
+          RATE_1024ms:
+            doc: Every 1.024s. Consumption is 0.4nA.
+            val: 0x00
+          RATE_512ms:
+            doc: Every 512ms. Consumption is 0.8nA.
+            val: 0x01
+          RATE_256ms:
+            doc: Every 256ms. Consumption is 1.6nA.
+            val: 0x02
+          RATE_128ms:
+            doc: Every 128ms. Consumption is 3.2nA.
+            val: 0x03
+          RATE_64ms:
+            doc: Every 64ms. Consumption is 6.4nA.
+            val: 0x04
+
+  APM: !Register
+    adr: 0x09
+    reset_val: 0x00
+    doc: Average Power Monitoring Control Register.
+    layout: !Layout
+      EN:
+        bits: [0]
+        access: [R, W]
+        doc: Enable APM. When set to True, APM is enabled.
+        accepts: !Bool
+      MODE:
+        bits: [1]
+        access: [R, W]
+        doc: APM operating mode. Pulse Counter Mode or Power Meter Mode.
+        accepts: !Enum
+          PULSE_COUNTER:
+            doc: Pulse counter mode - the AEM10900 counts the number of current pulses drawn by the boost converter.
+            val: 0x00
+          POWER_METER:
+            doc: Power meter mode - the number of pulses during a period is multiplied by a value to obtain the energy that has been transferred taking into account the efficiency of the AEM10900.
+            val: 0x01
+      WINDOW:
+        bits: [2-3]
+        access: [R, W]
+        doc: Select the APM computation window (noted TA in Section 9.4). The energy transferred is integrated over this configurable time window. (W_xx_yy) with xx being computation window and yy being refresh rate.
+        accepts: !Enum
+          W_128ms_256ms:
+            val: 0x00
+          W_64ms_128MS:
+            val: 0x01
+          W_32ms_64ms:
+            val: 0x02
+
+  IRQEN: !Register
+    adr: 0x0A
+    reset_val: 0x01
+    doc: IRQ Enable Register.
+    layout: !Layout
+      I2CRDY:
+        bits: [0]
+        access: [R, W]
+        doc: Enable IRQ for I2C ready status.
+        accepts: !Bool
+      VOVDIS:
+        bits: [1]
+        access: [R, W]
+        doc: Enable IRQ for overdischarge detection.
+        accepts: !Bool
+      VOVCH:
+        bits: [2]
+        access: [R, W]
+        doc: Enable IRQ for overcharge detection.
+        accepts: !Bool
+      SRCTHRESH:
+        bits: [3]
+        access: [R, W]
+        doc: Enable IRQ for SRC LOW threshold crossing (set in sleep register).
+        accepts: !Bool
+      TEMP:
+        bits: [4]
+        access: [R, W]
+        doc: Enable IRQ when temperature crosses temperature limits.
+        accepts: !Bool
+      APMDONE:
+        bits: [5]
+        access: [R, W]
+        doc: Enable IRQ for completion of APM measurement.
+        accepts: !Bool
+      APMERR:
+        bits: [6]
+        access: [R, W]
+        doc: Enable IRQ for signaling an error in the APM.
+        accepts: !Bool
+
+  CTRL: !Register
+    adr: 0x0B
+    reset_val: 0x00
+    doc: Control register for I2C configuration.
+    layout: !Layout
+      UPDATE:
+        bits: [0]
+        access: [R, W]
+        doc: This field is used to control the source of the AEM10900 configuration (GPIO or I2C).
+        accepts: !Enum
+          GPIO:
+            doc: Load configurations from the GPIOs
+            val: 0x00
+          I2C:
+            doc: Load configurations from the I2C registers
+            val: 0x01
+      RESERVED:
+        bits: [1]
+        access: [R]
+        doc: Write 0x00.
+        accepts: !Fixed 0x00
+      SYNCBUSY:
+        bits: [2]
+        access: [R]
+        doc: This field indicates whether the synchronization from the I2C registers to the system registers is ongoing or not.
+        accepts: !Enum
+          NSYNC:
+            doc: CTRL register not synchronizing.
+            val: 0x00
+          SYNC:
+            doc: CTRL register synchronizing.
+            val: 0x01
+
+  IRQFLG: !Register
+    adr: 0x0C
+    reset_val: 0x00
+    doc: The IRQFLG register contains all interrupt flags, corresponding to those enabled in the IRQEN register. This register is reseted when read.
+    layout: !Layout
+      I2CRDY:
+        bits: [0]
+        access: [R]
+        doc: Flag indicating I2C ready status.
+        accepts: !Bool
+      VOVDIS:
+        bits: [1]
+        access: [R]
+        doc: Flag indicating overdischarge detection.
+        accepts: !Bool
+      VOVCH:
+        bits: [2]
+        access: [R]
+        doc: Flag indicating overcharge detection.
+        accepts: !Bool
+      SRCTHRESH:
+        bits: [3]
+        access: [R]
+        doc: Flag indicating SRC LOW threshold crossing (set in sleep register).
+        accepts: !Bool
+      TEMP:
+        bits: [4]
+        access: [R]
+        doc: Flag indicating temperature crossed temperature limits.
+        accepts: !Bool
+      APMDONE:
+        bits: [5]
+        access: [R]
+        doc: Flag indicating completion of APM measurement.
+        accepts: !Bool
+      APMERR:
+        bits: [6]
+        access: [R]
+        doc: Flag indicating error in the APM.
+        accepts: !Bool
+
+  STATUS: !Register
+    adr: 0x0D
+    reset_val: 0x00
+    doc: Status register of AEM10900.
+    layout: !Layout
+      VOVDIS:
+        bits: [1]
+        access: [R]
+        doc: Status indicating whether the battery is higher or lower than the overdischarge level threshold. If the battery voltage goes below VOVDIS then the field is set to true, else it is set to false.
+        accepts: !Bool
+      VOVCH:
+        bits: [2]
+        access: [R]
+        doc: Status indicating whether the battery voltage is higher or lower than the overcharge level threshold. If the battery voltage rises above VOVCH then the field is set to 1, else it is set to 0.
+        accepts: !Bool
+      SRCTHRESH:
+        bits: [3]
+        access: [R]
+        doc: Status indicating whether the source voltage is higher or lower than the sleep level threshold. If the source voltage is higher than the sleep level then the field is set to 0, else the field is set to 1.
+        accepts: !Bool
+      TEMP:
+        bits: [4]
+        access: [R]
+        doc: Bit is set to 1 if the ambient temperature is outside the range defined by the TEMPCOLD and TEMPHOT registers. It is set to 0 is the temperature is within this range.
+        accepts: !Bool
+      RESERVED:
+        bits: [5]
+        access: [R]
+        doc: Write 0x00.
+        accepts: !Fixed 0x00
+      CHARGE:
+        bits: [6]
+        access: [R]
+        doc: Status indicating whether the AEM is currently charging the battery or not. If this bit is set to 0, the storage element is charging. If it is set to 1, the storage element is not charging.
+        accepts: !Bool
+      BSTDIS:
+        bits: [7]
+        access: [R]
+        doc: Status indicating whether the storage charging is enabled or not via the GPIO or I2C. If this bit is set to 0, the storage element charging is enabled. If it is set to 1, the storage element charging is disabled.
+        accepts: !Bool
+
+  APM0: !Register
+    adr: 0x0E
+    reset_val: 0x00
+    doc: APM Data Register 0.
+    layout: !Layout
+      DATA:
+        bits: [0-7]
+        access: [R]
+        doc: Lower byte of APM data.
+        accepts: !UInt
+
+  APM1: !Register
+    adr: 0x0F
+    reset_val: 0x00
+    doc: APM Data Register 1.
+    layout: !Layout
+      DATA:
+        bits: [0-7]
+        access: [R]
+        doc: Middle byte of APM data.
+        accepts: !UInt
+
+  APM2: !Register
+    adr: 0x10
+    reset_val: 0x00
+    doc: APM Data Register 2.
+    layout: !Layout
+      DATA:
+        bits: [0-7]
+        access: [R]
+        doc: Upper byte of APM data.
+        accepts: !UInt
+
+  TEMP: !Register
+    adr: 0x11
+    reset_val: 0x00
+    doc: Temperature Data Register.
+    layout: !Layout
+      DATA:
+        bits: [0-7]
+        access: [R]
+        doc: Temperature data measured by the thermal monitoring circuit. (8bit, 1V REF)
+        accepts: !UInt
+
+  STO: !Register
+    adr: 0x12
+    reset_val: 0x00
+    doc: Battery Voltage Register.
+    layout: !Layout
+      DATA:
+        bits: [0-7]
+        access: [R]
+        doc: Voltage level of the storage element (battery) connected to STO. VSTO = 4.8V * DATA / 256
+        accepts: !UInt
+
+  SRC: !Register
+    adr: 0x13
+    reset_val: 0x00
+    doc: Source Voltage Register.
+    layout: !Layout
+      DATA:
+        bits: [0-7]
+        access: [R]
+        doc: Voltage level of the energy source connected to SRC. Conversion according to table 32 in DS v1.5
+        accepts: !UInt
+  PN0: !Register
+    adr: 0xE0
+    reset_val: 0x30
+    doc: Part Number Register 0.
+    layout: !Layout
+      DATA:
+        bits: [0-7]
+        access: [R]
+        doc: Part number identification byte 0.
+        accepts: !UInt
+
+  PN1: !Register
+    adr: 0xE1
+    reset_val: 0x30
+    doc: Part Number Register 1.
+    layout: !Layout
+      DATA:
+        bits: [0-7]
+        access: [R]
+        doc: Part number identification byte 1.
+        accepts: !UInt
+
+  PN2: !Register
+    adr: 0xE2
+    reset_val: 0x39
+    doc: Part Number Register 2.
+    layout: !Layout
+      DATA:
+        bits: [0-7]
+        access: [R]
+        doc: Part number identification byte 2.
+        accepts: !UInt
+
+  PN3: !Register
+    adr: 0xE3
+    reset_val: 0x30
+    doc: Part Number Register 3.
+    layout: !Layout
+      DATA:
+        bits: [0-7]
+        access: [R]
+        doc: Part number identification byte 3.
+        accepts: !UInt
+
+  PN4: !Register
+    adr: 0xE4
+    reset_val: 0x31
+    doc: Part Number Register 4.
+    layout: !Layout
+      DATA:
+        bits: [0-7]
+        access: [R]
+        doc: Part number identification byte 4.
+        accepts: !UInt

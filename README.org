@@ -1,0 +1,17 @@
+#+TITLE: AEM10900 Driver
+#+AUTHOR: Silvano Cortesi
+#+DATE: 30.10.2024
+#+EMAIL: silvano.cortesi@pbl.ee.ethz.ch
+
+This repository contains driver for the AEM10900 energy harvester.
+
+#+begin_quote
+The AEM10900 is a fully integrated and compact battery charger circuit that extracts DC power from a solar cell to store energy in a rechargeable battery. This compact and ultra- efficient battery charger allows to extend battery lifetime and eliminates the primary energy storage in a large range of wireless application, such as wearable and medical applications and Smart sensors. Thanks to its Maximum Power Point Tracking and its ultra-low power boost converter, the AEM10900 harvests the maximum available input power from a source to charge a storage element, such as a Li-ion battery. The boost converter operates with input voltages in a range from 115 mV to 1.5 V. With its unique cold-start circuit, it can start operating with an input voltage as low as 250 mV and an input power of only 5 μW. The output voltages are in a range of 2.8 V to 4.8 V. -- [[https://e-peas.com/product/aem10900-solar-battery-charger/][e-peas]]
+#+end_quote
+
+The repository contains:
+- The [[file:aem10900.yaml][YAML]] specification of the driver, as used by Reginald to create the struct fields
+
+
+** YAML Transpile Instruction
+The yaml file can be automatically parsed using [[https://github.com/schilkp/reginald][Reginald]], based on branch ~schilkp/rust~, commit ~dc4ff0d~.
