@@ -33,46 +33,46 @@ registers:
         access: [R, W]
         doc: MPP ratio
         accepts: !Enum
-          _ZMPP:
+          R_ZMPP:
             val: 0x00
-          _90:
+          R_90:
             val: 0x01
-          _65:
+          R_65:
             val: 0x02
-          _60:
+          R_60:
             val: 0x03
-          _85:
+          R_85:
             val: 0x04
-          _75:
+          R_75:
             val: 0x05
-          _70:
+          R_70:
             val: 0x06
-          _80:
+          R_80:
             val: 0x07
-          _35:
+          R_35:
             val: 0x08
-          _50:
+          R_50:
             val: 0x09
       TIMING:
         bits: [4-6]
         access: [R, W]
-        doc: MPP Timing (_xx_yy) with xx being T_VOC and yy being T_MPPT.
+        doc: MPP Timing (T_xx_yy) with xx being T_VOC and yy being T_MPPT.
         accepts: !Enum
-          _2_64:
+          T_2_64:
             val: 0x00
-          _256_16384:
+          T_256_16384:
             val: 0x01
-          _64_4096:
+          T_64_4096:
             val: 0x02
-          _8_1024:
+          T_8_1024:
             val: 0x03
-          _4_256:
+          T_4_256:
             val: 0x04
-          _2_128:
+          T_2_128:
             val: 0x05
-          _4_512:
+          T_4_512:
             val: 0x06
-          _2_256:
+          T_2_256:
             val: 0x07
 
   VOVDIS: !Register
@@ -165,28 +165,28 @@ registers:
         access: [R, W]
         doc: This field sets the source voltage threshold below which the AEM10900 enters sleep state.
         accepts: !Enum
-          _mV:
+          V_mV:
             doc: Unknown what this option means.
             val: 0x0
-          _202mV:
+          V_202mV:
             doc: Sleep threshold at 0.202V.
             val: 0x1
-          _255mV:
+          V_255mV:
             doc: Sleep threshold at 0.255V.
             val: 0x2
-          _300mV:
+          V_300mV:
             doc: Sleep threshold at 0.300V.
             val: 0x3
-          _360mV:
+          V_360mV:
             doc: Sleep threshold at 0.360V.
             val: 0x4
-          _405mV:
+          V_405mV:
             doc: Sleep threshold at 0.405V.
             val: 0x5
-          _510mV:
+          V_510mV:
             doc: Sleep threshold at 0.510V.
             val: 0x6
-          _600mV:
+          V_600mV:
             doc: Sleep threshold at 0.600V.
             val: 0x7
 
@@ -200,19 +200,19 @@ registers:
         access: [R, W]
         doc: Acquisition Rate.
         accepts: !Enum
-          _1024ms:
+          R_1024ms:
             doc: Every 1.024s. Consumption is 0.4nA.
             val: 0x00
-          _512ms:
+          R_512ms:
             doc: Every 512ms. Consumption is 0.8nA.
             val: 0x01
-          _256ms:
+          R_256ms:
             doc: Every 256ms. Consumption is 1.6nA.
             val: 0x02
-          _128ms:
+          R_128ms:
             doc: Every 128ms. Consumption is 3.2nA.
             val: 0x03
-          _64ms:
+          R_64ms:
             doc: Every 64ms. Consumption is 6.4nA.
             val: 0x04
 
@@ -240,13 +240,13 @@ registers:
       WINDOW:
         bits: [2-3]
         access: [R, W]
-        doc: Select the APM computation window (noted TA in Section 9.4). The energy transferred is integrated over this configurable time window. (_xx_yy) with xx being computation window and yy being refresh rate.
+        doc: Select the APM computation window (noted TA in Section 9.4). The energy transferred is integrated over this configurable time window. (W_xx_yy) with xx being computation window and yy being refresh rate.
         accepts: !Enum
-          _128ms_256ms:
+          W_128ms_256ms:
             val: 0x00
-          _64ms_128MS:
+          W_64ms_128MS:
             val: 0x01
-          _32ms_64ms:
+          W_32ms_64ms:
             val: 0x02
 
   IRQEN: !Register
