@@ -2,7 +2,7 @@
 name: AEM10900
 author: "Silvano Cortesi"
 notice: |
-  Licensed under GPL
+  Licensed under LGPL-3.0
 defaults:
   layout_bitwidth: 8
 
@@ -58,21 +58,21 @@ registers:
         access: [R, W]
         doc: MPP Timing (T_xx_yy) with xx being T_VOC and yy being T_MPPT.
         accepts: !Enum
-          T_2_64:
+          T_2ms_64ms:
             val: 0x00
-          T_256_16384:
+          T_256ms_16384ms:
             val: 0x01
-          T_64_4096:
+          T_64ms_4096ms:
             val: 0x02
-          T_8_1024:
+          T_8ms_1024ms:
             val: 0x03
-          T_4_256:
+          T_4ms_256ms:
             val: 0x04
-          T_2_128:
+          T_2ms_128ms:
             val: 0x05
-          T_4_512:
+          T_4ms_512ms:
             val: 0x06
-          T_2_256:
+          T_2ms_256ms:
             val: 0x07
 
   VOVDIS: !Register
@@ -244,7 +244,7 @@ registers:
         accepts: !Enum
           W_128ms_256ms:
             val: 0x00
-          W_64ms_128MS:
+          W_64ms_128ms:
             val: 0x01
           W_32ms_64ms:
             val: 0x02
