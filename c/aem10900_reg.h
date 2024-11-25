@@ -10,6 +10,7 @@
  *
  * Listing file notice:
  *   Licensed under LGPL-3.0
+ *   File Version: 0.9.2
  */
 #ifndef REGINALD_AEM10900_REG_H
 #define REGINALD_AEM10900_REG_H

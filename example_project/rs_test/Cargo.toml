@@ -20,12 +20,12 @@ embassy-time-driver = { version = "0.1.0", features = ["tick-hz-32_768"] }
 embassy-time = { version = "0.3.2", features = ["defmt", "defmt-timestamp-uptime"] }
 
 cortex-m = { version = "0.7.7", features = ["critical-section-single-core"] }
-embassy-stm32 = { version = "0.1.0", features = ["defmt", "stm32u545re", "unstable-pac", "memory-x", "time-driver-any", "low-power"]  }
+embassy-stm32 = { version = "0.1.0", features = ["defmt", "stm32u545re", "unstable-pac", "memory-x", "time-driver-any"]  }
 
 embassy-embedded-hal = { version = "0.2.0", features = ["defmt"] }
 embassy-futures = "0.1.1"
 static_cell = "2.1.0"
-aem10900 = { version = "1.0.0", features = ["async", "defmt"], path = "../../rust" }
+aem10900 = { version = "0.9.2", features = ["async", "defmt"], path = "../../rust" }
 
 [patch.crates-io]
 embassy-stm32 = { git = "https://github.com/embassy-rs/embassy" }

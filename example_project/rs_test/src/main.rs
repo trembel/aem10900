@@ -72,7 +72,7 @@ async fn main(_spawner: Spawner) -> ! {
     }
 
     loop {
-        let res = dev.get_battery_voltage().await;
+        let res = dev.read_battery_voltage().await;
         match res {
             Err(e) => error!("Failed to read battery voltage from AEM10900 with {:?}", e),
             Ok(v) => info!("Battery voltage is {:?}", v),

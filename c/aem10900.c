@@ -5,7 +5,8 @@
  * Listing file author: Silvano Cortesi
  *
  * Listing file notice:
- *   Licensed under TBD
+ *   Licensed under LGPL-3.0
+ *   File Version: 0.9.2
  */
 
 #include "aem10900.h"
@@ -104,7 +105,7 @@ aem10900_err_t aem10900_init(struct aem10900_h *h) {
   return err;
 }
 
-aem10900_err_t aem10900_get_irqflag(struct aem10900_h *h) {
+aem10900_err_t aem10900_read_irqflag(struct aem10900_h *h) {
   aem10900_err_t err = E_AEM10900_SUCCESS;
   uint8_t data = 0;
 
@@ -116,8 +117,8 @@ aem10900_err_t aem10900_get_irqflag(struct aem10900_h *h) {
   return err;
 }
 
-aem10900_err_t aem10900_get_apm_data(struct aem10900_h *h,
-                                     enum aem10900_mode mode, float *result) {
+aem10900_err_t aem10900_read_apm_data(struct aem10900_h *h,
+                                      enum aem10900_mode mode, float *result) {
   aem10900_err_t err = E_AEM10900_SUCCESS;
   uint8_t data[3] = {0};
 
@@ -149,8 +150,8 @@ aem10900_err_t aem10900_get_apm_data(struct aem10900_h *h,
   return err;
 }
 
-aem10900_err_t aem10900_get_battery_voltage(struct aem10900_h *h,
-                                            float *result) {
+aem10900_err_t aem10900_read_battery_voltage(struct aem10900_h *h,
+                                             float *result) {
   aem10900_err_t err = E_AEM10900_SUCCESS;
   uint8_t data = 0;
 
@@ -169,8 +170,8 @@ aem10900_err_t aem10900_get_battery_voltage(struct aem10900_h *h,
   return err;
 }
 
-aem10900_err_t aem10900_get_source_voltage(struct aem10900_h *h,
-                                           float *result) {
+aem10900_err_t aem10900_read_source_voltage(struct aem10900_h *h,
+                                            float *result) {
   aem10900_err_t err = E_AEM10900_SUCCESS;
   uint8_t data = 0;
 

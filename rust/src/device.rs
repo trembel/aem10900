@@ -26,7 +26,7 @@ where
         }
     }
 
-    /// Allow direct access to the SPI bus
+    /// Allow direct access to the I2C bus
     pub fn bus(&mut self) -> &mut I2C {
         &mut self.i2c
     }
@@ -163,7 +163,7 @@ where
 
     /// Function to readout and clear the IRQ Flag of the AEM10900
     #[maybe_async_attr]
-    pub async fn get_irq_flag(&mut self) -> Result<Irqflg, Error<I2C>> {
+    pub async fn read_irq_flag(&mut self) -> Result<Irqflg, Error<I2C>> {
         let mut byte_arr: [u8; 1] = [0];
 
         self.read_regs(Irqflg::ADDRESS, &mut byte_arr).await?;
@@ -172,7 +172,7 @@ where
 
     /// Function to readout the APM Data of the AEM10900, based on the mode set in the configs
     #[maybe_async_attr]
-    pub async fn get_apm_data(&mut self) -> Result<ApmData, Error<I2C>> {
+    pub async fn read_apm_data(&mut self) -> Result<ApmData, Error<I2C>> {
         let mut byte_arr: [u8; 3] = [0; 3];
 
         self.read_regs(Apm0::ADDRESS, &mut byte_arr).await?;
@@ -196,7 +196,7 @@ where
 
     /// Function to readout the battery voltage of the AEM10900
     #[maybe_async_attr]
-    pub async fn get_battery_voltage(&mut self) -> Result<f32, Error<I2C>> {
+    pub async fn read_battery_voltage(&mut self) -> Result<f32, Error<I2C>> {
         let mut byte_arr: [u8; 1] = [0];
 
         self.read_regs(Sto::ADDRESS, &mut byte_arr).await?;
@@ -208,7 +208,7 @@ where
 
     /// Function to readout the source voltage of the AEM10900
     #[maybe_async_attr]
-    pub async fn get_source_voltage(&mut self) -> Result<f32, Error<I2C>> {
+    pub async fn read_source_voltage(&mut self) -> Result<f32, Error<I2C>> {
         let mut byte_arr: [u8; 1] = [0];
 
         self.read_regs(Src::ADDRESS, &mut byte_arr).await?;

@@ -5,7 +5,8 @@
  * Listing file author: Silvano Cortesi
  *
  * Listing file notice:
- *   Licensed under TBD
+ *   Licensed under LGPL-3.0
+ *   File Version: 0.9.2
  */
 
 #ifndef AEM10900_H
@@ -96,7 +97,7 @@ struct aem10900_h {
    * E_AEM10900_COM_ERR.
    */
   aem10900_err_t (*i2c_write_regs)(uint8_t dev_adr, uint8_t start_reg_adr,
-                                  uint8_t *buf, size_t length);
+                                   uint8_t *buf, size_t length);
 
   // === Interface function pointers. Optional. ===
 
@@ -118,8 +119,8 @@ struct aem10900_h {
   void (*log)(char *msg, bool is_err, bool has_int_arg, uint32_t arg);
 
   // === Device Configuration. Required. ===
-  struct aem10900_reg_config conf;  //!< Configuration. Required.
-  uint8_t dev_adr; //!< Device I2C Slave Address. Required.
+  struct aem10900_reg_config conf; //!< Configuration. Required.
+  uint8_t dev_adr;                 //!< Device I2C Slave Address. Required.
 };
 
 // ======== Function Prototypes ================================================
@@ -162,7 +163,7 @@ aem10900_err_t aem10900_init(struct aem10900_h *h);
  * from
  * @ref aem10900_err_t.
  */
-aem10900_err_t aem10900_get_irqflag(struct aem10900_h *h);
+aem10900_err_t aem10900_read_irqflag(struct aem10900_h *h);
 
 /**
  * @brief Get the battery voltage.
@@ -175,8 +176,8 @@ aem10900_err_t aem10900_get_irqflag(struct aem10900_h *h);
  * from
  * @ref aem10900_err_t.
  */
-aem10900_err_t aem10900_get_battery_voltage(struct aem10900_h *h,
-                                            float *result);
+aem10900_err_t aem10900_read_battery_voltage(struct aem10900_h *h,
+                                             float *result);
 
 /**
  * @brief Get apm data.
@@ -191,7 +192,8 @@ aem10900_err_t aem10900_get_battery_voltage(struct aem10900_h *h,
  * from
  * @ref aem10900_err_t.
  */
-aem10900_err_t aem10900_get_apm_data(struct aem10900_h *h, enum aem10900_mode mode, float *result);
+aem10900_err_t aem10900_read_apm_data(struct aem10900_h *h,
+                                      enum aem10900_mode mode, float *result);
 
 /**
  * @brief Get the source voltage.
@@ -204,7 +206,8 @@ aem10900_err_t aem10900_get_apm_data(struct aem10900_h *h, enum aem10900_mode mo
  * from
  * @ref aem10900_err_t.
  */
-aem10900_err_t aem10900_get_source_voltage(struct aem10900_h *h, float *result);
+aem10900_err_t aem10900_read_source_voltage(struct aem10900_h *h,
+                                            float *result);
 
 /**
  * @brief Function to write to a specific register of a device

@@ -133,7 +133,7 @@ int main(void) {
 
   // Change desired configurations
   {
-    dev.conf.mpptcfg.ratio = AEM10900_RATIO_R_80;      // set 80% MPPT ratio
+    dev.conf.mpptcfg.ratio = AEM10900_RATIO_R_80;          // set 80% MPPT ratio
     dev.conf.mpptcfg.timing = AEM10900_TIMING_T_4MS_512MS; // 4ms - 512ms
     dev.conf.vovdis.thresh = (uint8_t)((3.00 - 0.50625) / 0.05625); // 3V
     dev.conf.vovch.thresh = (uint8_t)((4.20 - 1.2375) / 0.05625);   // 4.2V
@@ -174,9 +174,9 @@ int main(void) {
   /* USER CODE BEGIN WHILE */
   while (1) {
     float res = 0;
-    aem10900_get_battery_voltage(&dev, &res);
-    char buf[100] = { 0 };
-    snprintf(buf, sizeof(buf), "Battery voltage is %f\r\n", res); 
+    aem10900_read_battery_voltage(&dev, &res);
+    char buf[100] = {0};
+    snprintf(buf, sizeof(buf), "Battery voltage is %f\r\n", res);
     SEGGER_RTT_WriteString(0, buf);
     HAL_Delay(5000);
 
@@ -420,7 +420,7 @@ aem10900_err_t aem10900_i2c_write_regs(uint8_t dev_adr, uint8_t start_reg_adr,
                                        uint8_t *buf, size_t length) {
 
   uint32_t timeout_counter = 134000; // 10ms
-  
+
   // Transmit data
   aem_i2c_tx_cplt_flag = false;
   HAL_StatusTypeDef ret =
@@ -432,7 +432,7 @@ aem10900_err_t aem10900_i2c_write_regs(uint8_t dev_adr, uint8_t start_reg_adr,
   if (timeout_counter == 0) {
     return E_AEM10900_COM_ERR;
   }
-  
+
   if (ret == HAL_OK) {
     return E_AEM10900_SUCCESS;
   }
@@ -465,8 +465,9 @@ aem10900_err_t aem10900_i2c_read_regs(uint8_t dev_adr, uint8_t start_reg_adr,
 
 void aem10900_log(char *msg, bool is_err, bool has_int_arg, uint32_t arg) {
   char *format_str =
-      is_err ? (has_int_arg ? "[ERR] %s, with value: 0x%02x\r\n" : "[ERR] %s\r\n")
-             : (has_int_arg ? "[INF] %s, with value: 0x%02x\r\n" : "[INF] %s\r\n");
+      is_err
+          ? (has_int_arg ? "[ERR] %s, with value: 0x%02x\r\n" : "[ERR] %s\r\n")
+          : (has_int_arg ? "[INF] %s, with value: 0x%02x\r\n" : "[INF] %s\r\n");
   if (has_int_arg) {
     SEGGER_RTT_printf(0, format_str, msg, arg);
   } else {
