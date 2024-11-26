@@ -1,7 +1,6 @@
 #+TITLE: AEM10900 Driver
 #+AUTHOR: Silvano Cortesi
 #+DATE: 18.11.2024
-#+EMAIL: silvano.cortesi@pbl.ee.ethz.ch
 #+LICENSE: LGPL-3.0
 
 This repository contains driver for the AEM10900 energy harvester.

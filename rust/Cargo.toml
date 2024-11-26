@@ -1,6 +1,6 @@
 [package]
 name = "aem10900"
-version = "0.9.2"
+version = "0.9.3"
 authors = ["Silvano Cortesi <silvano.cortesi@hotmail.com>"]
 description = "Driver crate for the AEM10900 Energy Harvester"
 categories = ["embedded", "hardware-support", "no-std"]
